@@ -438,7 +438,13 @@ def config_from_toml(
         elif isinstance(paths, list):
             paths = [(None, x) for x in paths]
         elif isinstance(paths, dict):
-            paths = paths.items()
+            paths1 = []
+            for pk, pv in paths.items():
+                if isinstance(pv, list):
+                    paths1.extend([(pk, x) for x in pv])
+                elif isinstance(pv, str):
+                    paths1.append((pk, pv))
+            paths = paths1
         else:
             raise LayoutError(f"expected 'meta.concat' to be string, list, or dictionary, not: {paths!r}")
 
