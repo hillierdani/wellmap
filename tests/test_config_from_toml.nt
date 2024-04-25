@@ -617,6 +617,64 @@ test_config_from_toml:
           col_j: 0
           x: 3
   -
+    id: concat-dict-of-lists
+    files:
+      main.toml:
+        > [meta.concat]
+        > a = ['concat_21.toml','concat_22.toml']
+        >
+        > [well.A1]
+        > x = 1
+
+      concat_21.toml:
+        > [well.A1]
+        > x = 21
+
+      concat_21.csv:
+        > Well,Data
+        > A1,twentytwo
+
+      concat_22.toml:
+        > [well.A1]
+        > x = 23
+
+      concat_23.csv:
+        > Well,Data
+        > A1,twentythree
+
+    kwargs:
+      path_guess: '{0.stem}.csv'
+
+    config:
+      well:
+        A1:
+          x: 1
+
+    concats:
+      -
+        -
+          path: DIR/'concat_22.csv'
+          plate: 'a'
+          well: 'A1'
+          well0: 'A01'
+          row: 'A'
+          col: '1'
+          row_i: 0
+          col_j: 0
+          x: 22
+      -
+        -
+          path: DIR/'concat_23.csv'
+          plate: 'b'
+          well: 'A1'
+          well0: 'A01'
+          row: 'A'
+          col: '1'
+          row_i: 0
+          col_j: 0
+          x: 23
+
+  -
     id: concat-nested
     files:
       main.toml:
@@ -660,6 +718,7 @@ test_config_from_toml:
           row_i: 0
           col_j: 2
           x: 3
+
   -
     id: concat-extras
     # Concatenated files are not searched for extras.
